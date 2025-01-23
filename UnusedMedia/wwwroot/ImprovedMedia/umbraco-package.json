@@ -1,0 +1,24 @@
+﻿{
+  "$schema": "../../umbraco-package-schema.json",
+  "name": "ImprovedMedia",
+  "version": "0.1.0",
+  "extensions": [
+    {
+      "type": "dashboard",
+      "alias": "improvedMedia",
+      "name": "Improved Media",
+      "js": "/App_Plugins/ImprovedMedia/dashboard.js",
+      "weight": -1,
+      "meta": {
+        "label": "Unused Media",
+        "pathname": "improvedMedia"
+      },
+      "conditions": [
+        {
+          "alias": "Umb.Condition.SectionAlias",
+          "match": "Umb.Section.Media"
+        }
+      ]
+    }
+  ]
+}
