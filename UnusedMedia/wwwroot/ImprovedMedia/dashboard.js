@@ -77,14 +77,14 @@ export default class MyDashboardElement extends UmbLitElement {
         console.log("Did not get a valid response, could not load images");
     }
 
-    async makeRequest(url, method = 'GET') {
+    async makeRequest(url, method = 'GET', body) {
         const context = await this.getContext(UMB_AUTH_CONTEXT);
         const token = await context.getLatestToken();
         
         try {
             const response = await fetch(url, {
                 method,
-                body: undefined,
+                body: body ? body : undefined,
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
@@ -100,16 +100,9 @@ export default class MyDashboardElement extends UmbLitElement {
 
     async deleteUnusedImages() {
         const payload = JSON.stringify(this._unusedImages.items);
-        
-        await fetch(url, {
-            method: 'POST',
-            body: payload,
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`,
-            },
-        });
-        
+
+        const json = await this.makeRequest("/umbraco/management/api/v1/UnusedMedia/delete", 'POST', payload)
+        console.log(json);
         this._unusedImages = {items: []};
         this.#notificationContext?.peek("positive", {
             data: {headline: "Unused Media deleted"},
