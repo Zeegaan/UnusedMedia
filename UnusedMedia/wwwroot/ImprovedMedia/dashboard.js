@@ -1,7 +1,6 @@
 ﻿import {UmbLitElement} from "@umbraco-cms/backoffice/lit-element";
 import {html, css} from "@umbraco-cms/backoffice/external/lit";
 import {UMB_NOTIFICATION_CONTEXT} from "@umbraco-cms/backoffice/notification";
-import {UMB_CURRENT_USER_CONTEXT} from "@umbraco-cms/backoffice/current-user";
 import { UMB_AUTH_CONTEXT } from '@umbraco-cms/backoffice/auth';
 
 export default class MyDashboardElement extends UmbLitElement {
@@ -24,9 +23,6 @@ export default class MyDashboardElement extends UmbLitElement {
 
     constructor() {
         super();
-        this.consumeContext(UMB_CURRENT_USER_CONTEXT, (instance) => {
-            this._observeCurrentUser(instance);
-        });
         this.consumeContext(UMB_NOTIFICATION_CONTEXT, (instance) => {
             this.#notificationContext = instance;
         });
@@ -61,12 +57,6 @@ export default class MyDashboardElement extends UmbLitElement {
             </uui-box>
         `;
     }
-
-    async _observeCurrentUser(instance) {
-        this.observe(instance.currentUser, (currentUser) => {
-            this._currentUser = currentUser;
-        });
-    };
 
     async getUnusedImages() {
         const json = await this.makeRequest("/umbraco/management/api/v1/UnusedMedia/all", 'GET')
