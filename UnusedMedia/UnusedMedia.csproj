@@ -19,9 +19,15 @@
     <SupportedPlatform Include="browser" />
   </ItemGroup>
 
+
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="9.0.1" />
+    <PackageReference Include="Umbraco.Cms.Web.Website" Version="15.0.0" />
+    <PackageReference Include="Umbraco.Cms.Web.Common" Version="15.0.0" />
+    <PackageReference Include="Umbraco.Cms.Api.Common" Version="15.0.0" />
+    <PackageReference Include="Umbraco.Cms.Api.Management" Version="15.0.0" />
+    <PackageReference Include="Umbraco.Cms.Api.Delivery" Version="15.0.0" />
   </ItemGroup>
+
 
   <ItemGroup>
     <Folder Include="Frontend\" />
