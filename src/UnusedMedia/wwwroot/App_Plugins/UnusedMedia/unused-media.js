@@ -27,7 +27,7 @@ const a = [
     name: "Recycle bin dashboard",
     alias: "EnhancedRecycleBin.Dashboard",
     type: "dashboard",
-    js: () => import("./recycle-bin-dashboard.element-CtHQhDzI.js"),
+    js: () => import("./recycle-bin-dashboard.element-kazV3Vve.js"),
     meta: {
       label: "EnhancedRecycleBin",
       pathname: "enhanced-recycle-bin"

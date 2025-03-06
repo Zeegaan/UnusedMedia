@@ -11,7 +11,7 @@ import { UmbRequestReloadChildrenOfEntityEvent } from "@umbraco-cms/backoffice/e
 export class EnhancedRecycleBinDashboardElement extends UmbElementMixin(LitElement) {
 
   @state()
-  private _unusedImages: Array<UnusedMediaViewModel>;
+  private _trashedMedia: Array<UnusedMediaViewModel>;
 
   @state()
   private _selection: Array<UnusedMediaViewModel>;
@@ -24,7 +24,7 @@ export class EnhancedRecycleBinDashboardElement extends UmbElementMixin(LitEleme
     });
 
 
-    this._unusedImages = [];
+    this._trashedMedia = [];
     this._selection = [];
     this.getRecycleBinMedia();
   }
@@ -33,15 +33,15 @@ export class EnhancedRecycleBinDashboardElement extends UmbElementMixin(LitEleme
 
   getRecycleBinMedia = async () => {
 
-    this._unusedImages = [];
+    this._trashedMedia = [];
     const { data, error } = await EnhancedMediaService.recycleBinMedia();
 
     if (error) {
       if (this.#notificationContext) {
         this.#notificationContext.peek("warning", {
           data: {
-            headline: `Could not get unused media`,
-            message: `Something went wrong when trying to get the unused media.`,
+            headline: `Could not get media from recycle bin`,
+            message: `Something went wrong when trying to get the media from the recycle bin.`,
           }
         })
       }
@@ -50,7 +50,7 @@ export class EnhancedRecycleBinDashboardElement extends UmbElementMixin(LitEleme
 
     if (data !== undefined) {
       // @ts-ignore
-      this._unusedImages = data.items;
+      this._trashedMedia = data.items;
     }
   }
 
@@ -58,12 +58,12 @@ export class EnhancedRecycleBinDashboardElement extends UmbElementMixin(LitEleme
     const buttonElement = ev.target as UUIButtonElement;
     buttonElement.state = "waiting";
 
-    await EnhancedMediaService.restoreAll({body: this._unusedImages});
+    await EnhancedMediaService.restoreAll({body: this._trashedMedia});
     if (this.#notificationContext) {
       this.#notificationContext.peek("positive", {
         data: {
-          headline: `Deleted unused media`,
-          message: `Successfully deleted ${this._unusedImages.length} unused media items.`,
+          headline: `Restored all trashed media`,
+          message: `Successfully restored ${this._trashedMedia.length} trashed media items.`,
         }
       })
     }
@@ -88,8 +88,8 @@ export class EnhancedRecycleBinDashboardElement extends UmbElementMixin(LitEleme
     if (this.#notificationContext) {
       this.#notificationContext.peek("positive", {
         data: {
-          headline: `Deleted unused media`,
-          message: `Successfully deleted ${this._selection.length} unused media items.`,
+          headline: `Restored selected media`,
+          message: `Successfully restored ${this._selection.length} trashed media items.`,
         }
       })
     }
@@ -129,7 +129,7 @@ export class EnhancedRecycleBinDashboardElement extends UmbElementMixin(LitEleme
         </div>
 
         <div id="grid">
-          ${this._unusedImages.map((image) => {
+          ${this._trashedMedia.map((image) => {
       return html`
                               <uui-card-media
                                 .name="${image.name}"
