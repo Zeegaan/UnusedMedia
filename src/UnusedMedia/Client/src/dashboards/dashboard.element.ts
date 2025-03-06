@@ -41,7 +41,7 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
 
     if (data !== undefined) {
       // @ts-ignore
-      this._unusedImages = data.items;
+      this._unusedImages = data.keys;
     }
   }
 
@@ -50,12 +50,13 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
     buttonElement.state = "waiting";
 
     await UnusedMediaService.delete({body: this._unusedImages});
+    await this.getUnusedMedia();
 
     if (this.#notificationContext) {
-      this.#notificationContext.peek("warning", {
+      this.#notificationContext.peek("positive", {
         data: {
           headline: `Deleted unused media`,
-          message: `Something went wrong when trying to get the unused media.`,
+          message: `Successfully deleted ${this._unusedImages.length} unused media items.`,
         }
       })
     }
@@ -69,7 +70,7 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
         <div style="padding: 10px">
           <h1>Welcome to the improved media dashboard</h1>
           <p>This will show unused media by the click of a button</p>
-          <uui-button look="primary" color="danger" label="Delete unused media" id="clickMe" look="secondary"
+          <uui-button look="primary" color="danger" label="Delete ALL unused media" id="clickMe" look="secondary"
                       @click="${this.#onClickDeleteUnusedMedia}"></uui-button>
         </div>
 

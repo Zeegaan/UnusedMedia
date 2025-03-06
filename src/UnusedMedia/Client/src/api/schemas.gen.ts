@@ -23,10 +23,10 @@ export const NotificationHeaderModelSchema = {
 } as const;
 
 export const UnusedMediaViewModelSchema = {
-    required: ['items'],
+    required: ['keys'],
     type: 'object',
     properties: {
-        items: {
+        keys: {
             type: 'array',
             items: {
                 type: 'string',

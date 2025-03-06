@@ -9,7 +9,7 @@ export type NotificationHeaderModel = {
 };
 
 export type UnusedMediaViewModel = {
-    items: Array<(string)>;
+    keys: Array<(string)>;
 };
 
 export type UnusedMediaResponse = ((UnusedMediaViewModel));

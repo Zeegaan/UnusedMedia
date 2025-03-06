@@ -6,6 +6,7 @@ using Umbraco.Cms.Core.Models.Entities;
 using Umbraco.Cms.Core.Models.Membership;
 using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Services;
+using UnusedMedia.ViewModels;
 
 namespace UnusedMedia.Controllers
 {
@@ -37,12 +38,7 @@ namespace UnusedMedia.Controllers
                 .ToArray();
 
             var unrelatedMedia = media.Where(x => _relationService.IsRelated(x.Id) is false);
-            return Ok(new UnusedMediaViewModel { Items = unrelatedMedia.Select(x => x.Key) });
-        }
-
-        public class UnusedMediaViewModel
-        {
-            public IEnumerable<Guid> Items { get; set; }
+            return Ok(new UnusedMediaViewModel { Keys = unrelatedMedia.Select(x => x.Key) });
         }
 
         [HttpPost("delete")]
