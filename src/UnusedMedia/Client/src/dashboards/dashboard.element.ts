@@ -10,6 +10,9 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
   @state()
   private _unusedImages: Array<string>;
 
+  @state()
+  private _selection: Array<string>;
+
   constructor() {
     super();
 
@@ -18,6 +21,7 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
     });
 
     this._unusedImages = [];
+    this._selection = [];
     this.getUnusedMedia();
   }
 
@@ -63,6 +67,15 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
     buttonElement.state = "success";
   }
 
+  #onSelected(item: string) {
+    this._selection.push(item);
+    this.requestUpdate("_selection");
+  }
+
+  #onDeselected(item: string) {
+    this._selection = this._selection.filter((value) => value !== item);
+  }
+
   render() {
     return html`
 
@@ -77,10 +90,20 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
         <div id="grid">
           ${this._unusedImages.map((image) => {
             return html`
-                            <div>
-                                <umb-imaging-thumbnail unique="${image}"
-                                                       style="width: 300px;height: 300px; display:block"></umb-imaging-thumbnail>
-                            </div>`
+                              <uui-card-media
+                                name="${image}"
+                                data-mark="${image}"
+                                selectable="true"
+                                select-only="true"
+                                @selected=${() => this.#onSelected(image)}
+                                @deselected=${() => this.#onDeselected(image)}
+                                ?selected=${this._selection.includes(image)}>
+                              <umb-imaging-thumbnail
+                                unique="${image}"
+                                width="300"
+                                height="300"
+                                style="max-width: 300px;max-height: 300px; display:block"></umb-imaging-thumbnail>
+                            </uui-card-media>`
           })}
         </div>
       </uui-box>
@@ -96,7 +119,7 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
 
         #grid {
             display: grid;
-            grid-template-columns: auto auto auto auto auto;
+            grid-template-columns: auto auto auto auto;
             gap: 10px;
 
         }`
