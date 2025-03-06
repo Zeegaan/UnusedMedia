@@ -10,7 +10,7 @@ const a = [
     name: "Unused Media Dashboard",
     alias: "UnusedMedia.Dashboard",
     type: "dashboard",
-    js: () => import("./unused-media-dashboard.element-CBZ3UlHJ.js"),
+    js: () => import("./unused-media-dashboard.element-COv1cK0I.js"),
     meta: {
       label: "Unused Media",
       pathname: "unused-media"

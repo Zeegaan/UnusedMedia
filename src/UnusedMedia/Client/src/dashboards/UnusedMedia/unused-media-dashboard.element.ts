@@ -120,7 +120,7 @@ export class UnusedMediaDashboardElement extends UmbElementMixin(LitElement) {
 
       <uui-box>
         <div style="padding: 10px">
-          <h1>Welcome to the improved media dashboard</h1>
+          <h1>Welcome to the unused media dashboard</h1>
           <p>This will show unused media by the click of a button</p>
           <uui-button look="primary" color="danger" label="Delete ALL unused media" id="clickMe" look="secondary"
                       @click="${this.#onClickDeleteAllUnusedMedia}"></uui-button>
