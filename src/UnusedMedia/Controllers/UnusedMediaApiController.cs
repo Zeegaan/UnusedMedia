@@ -10,8 +10,8 @@ using UnusedMedia.ViewModels;
 namespace UnusedMedia.Controllers
 {
     [ApiVersion("1.0")]
-    [ApiExplorerSettings(GroupName = "UnusedMedia")]
-    public class UnusedMediaApiController : UnusedMediaApiControllerBase
+    [ApiExplorerSettings(GroupName = "EnhancedMedia")]
+    public class UnusedMediaApiController : EnhancedMediaApiControllerBase
     {
         private readonly IEntityService _entityService;
         private readonly IMediaEditingService _mediaEditingService;

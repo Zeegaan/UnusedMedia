@@ -10,7 +10,7 @@ namespace UnusedMedia.Controllers
     [BackOfficeRoute("unusedmedia/api/v{version:apiVersion}")]
     [Authorize(Policy = AuthorizationPolicies.SectionAccessContent)]
     [MapToApi(Constants.ApiName)]
-    public class UnusedMediaApiControllerBase : ControllerBase
+    public class EnhancedMediaApiControllerBase : ControllerBase
     {
     }
 }

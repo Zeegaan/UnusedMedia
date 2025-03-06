@@ -1,6 +1,6 @@
 import { LitElement, css, html, customElement, state } from "@umbraco-cms/backoffice/external/lit";
 import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
-import {UnusedMediaService, UnusedMediaViewModel} from "../../api";
+import {EnhancedMediaService, UnusedMediaViewModel} from "../../api";
 import { UUIButtonElement } from "@umbraco-cms/backoffice/external/uui";
 import { UMB_NOTIFICATION_CONTEXT, UmbNotificationContext } from "@umbraco-cms/backoffice/notification";
 import { UMB_ACTION_EVENT_CONTEXT } from "@umbraco-cms/backoffice/action";
@@ -33,7 +33,7 @@ export class EnhancedRecycleBinDashboardElement extends UmbElementMixin(LitEleme
 
   getUnusedMedia = async () => {
 
-    const { data, error } = await UnusedMediaService.unusedMedia();
+    const { data, error } = await EnhancedMediaService.unusedMedia();
 
     if (error) {
       if (this.#notificationContext) {
@@ -53,11 +53,11 @@ export class EnhancedRecycleBinDashboardElement extends UmbElementMixin(LitEleme
     }
   }
 
-  #onClickDeleteAllUnusedMedia = async (ev: Event) => {
+  #onClickRestoreAll = async (ev: Event) => {
     const buttonElement = ev.target as UUIButtonElement;
     buttonElement.state = "waiting";
 
-    await UnusedMediaService.delete({body: this._unusedImages});
+    await EnhancedMediaService.delete({body: this._unusedImages});
     if (this.#notificationContext) {
       this.#notificationContext.peek("positive", {
         data: {
@@ -82,7 +82,7 @@ export class EnhancedRecycleBinDashboardElement extends UmbElementMixin(LitEleme
     const buttonElement = ev.target as UUIButtonElement;
     buttonElement.state = "waiting";
 
-    await UnusedMediaService.delete({body: this._selection});
+    await EnhancedMediaService.delete({body: this._selection});
 
     if (this.#notificationContext) {
       this.#notificationContext.peek("positive", {
@@ -119,11 +119,11 @@ export class EnhancedRecycleBinDashboardElement extends UmbElementMixin(LitEleme
 
       <uui-box>
         <div style="padding: 10px">
-          <h1>Welcome to the improved media dashboard</h1>
-          <p>This will show unused media by the click of a button</p>
-          <uui-button look="primary" color="danger" label="Delete ALL unused media" id="clickMe" look="secondary"
-                      @click="${this.#onClickDeleteAllUnusedMedia}"></uui-button>
-          <uui-button look="primary" color="positive" label="Delete selected" id="clickMe" look="secondary"
+          <h1>Welcome to the enhanced recycle bin dashboard</h1>
+          <p>This will allow you to browse trashed content, much like you know the media section, and choose which to restore</p>
+          <uui-button look="primary" color="warning" label="Restore ALL trashed media" id="clickMe" look="secondary"
+                      @click="${this.#onClickRestoreAll}"></uui-button>
+          <uui-button look="primary" color="positive" label="Restore selected" id="clickMe" look="secondary"
                       @click="${this.#onClickDeleteSelectedUnusedMedia}"></uui-button>
         </div>
 

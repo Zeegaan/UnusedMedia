@@ -1,6 +1,6 @@
 import { LitElement, css, html, customElement, state } from "@umbraco-cms/backoffice/external/lit";
 import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
-import {UnusedMediaService, UnusedMediaViewModel} from "../../api";
+import {EnhancedMediaService, UnusedMediaViewModel} from "../../api";
 import { UUIButtonElement } from "@umbraco-cms/backoffice/external/uui";
 import { UMB_NOTIFICATION_CONTEXT, UmbNotificationContext } from "@umbraco-cms/backoffice/notification";
 import { UMB_ACTION_EVENT_CONTEXT } from "@umbraco-cms/backoffice/action";
@@ -33,7 +33,8 @@ export class UnusedMediaDashboardElement extends UmbElementMixin(LitElement) {
 
   getUnusedMedia = async () => {
 
-    const { data, error } = await UnusedMediaService.unusedMedia();
+    this._unusedImages = [];
+    const { data, error } = await EnhancedMediaService.unusedMedia();
 
     if (error) {
       if (this.#notificationContext) {
@@ -57,7 +58,7 @@ export class UnusedMediaDashboardElement extends UmbElementMixin(LitElement) {
     const buttonElement = ev.target as UUIButtonElement;
     buttonElement.state = "waiting";
 
-    await UnusedMediaService.delete({body: this._unusedImages});
+    await EnhancedMediaService.delete({body: this._unusedImages});
     if (this.#notificationContext) {
       this.#notificationContext.peek("positive", {
         data: {
@@ -82,7 +83,7 @@ export class UnusedMediaDashboardElement extends UmbElementMixin(LitElement) {
     const buttonElement = ev.target as UUIButtonElement;
     buttonElement.state = "waiting";
 
-    await UnusedMediaService.delete({body: this._selection});
+    await EnhancedMediaService.delete({body: this._selection});
 
     if (this.#notificationContext) {
       this.#notificationContext.peek("positive", {
@@ -142,7 +143,7 @@ export class UnusedMediaDashboardElement extends UmbElementMixin(LitElement) {
                                 width="300"
                                 height="300"
                                 style="width: 300px;height: 300px; display:block"
-                                icon=${image.icon}></umb-imaging-thumbnail>
+                                .icon=${image.icon}></umb-imaging-thumbnail>
                             </uui-card-media>`
           })}
         </div>

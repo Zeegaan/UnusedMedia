@@ -5,7 +5,7 @@ import type { UnusedMediaError, UnusedMediaResponse, DeleteData, DeleteError, De
 
 export const client = createClient(createConfig());
 
-export class UnusedMediaService {
+export class EnhancedMediaService {
     public static unusedMedia<ThrowOnError extends boolean = false>(options?: Options<unknown, ThrowOnError>) {
         return (options?.client ?? client).get<UnusedMediaResponse, UnusedMediaError, ThrowOnError>({
             ...options,

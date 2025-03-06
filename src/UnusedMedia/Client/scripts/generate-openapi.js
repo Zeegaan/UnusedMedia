@@ -5,11 +5,11 @@ import { createClient } from '@hey-api/openapi-ts';
 // Start notifying user we are generating the TypeScript client
 console.log(chalk.green("Generating OpenAPI client..."));
 
-const swaggerUrl = process.argv[2];
+const swaggerUrl = "https://localhost:44342/umbraco/swagger/enhancedmedia/swagger.json"
 if (swaggerUrl === undefined) {
   console.error(chalk.red(`ERROR: Missing URL to OpenAPI spec`));
   console.error(`Please provide the URL to the OpenAPI spec as the first argument found in ${chalk.yellow('package.json')}`);
-  console.error(`Example: node generate-openapi.js ${chalk.yellow('https://localhost:44331/umbraco/swagger/REPLACE_ME/swagger.json')}`);
+  console.error(`Example: node generate-openapi.js ${chalk.yellow('https://localhost:44331/umbraco/swagger/enhancedmedia/swagger.json')}`);
   process.exit();
 }
 
