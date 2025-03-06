@@ -85,6 +85,5 @@ namespace UnusedMedia.Controllers
 
             return Ok(new PagedViewModel<UnusedMediaViewModel>() { Items = rootEntities.Select(x => (IMediaEntitySlim)x).Select(Map) });
         }
-
     }
 }

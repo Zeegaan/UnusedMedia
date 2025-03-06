@@ -33,6 +33,7 @@ export class EnhancedRecycleBinDashboardElement extends UmbElementMixin(LitEleme
 
   getRecycleBinMedia = async () => {
 
+    this._unusedImages = [];
     const { data, error } = await EnhancedMediaService.recycleBinMedia();
 
     if (error) {
@@ -78,11 +79,11 @@ export class EnhancedRecycleBinDashboardElement extends UmbElementMixin(LitEleme
     buttonElement.state = "success";
   }
 
-  #onClickDeleteSelectedUnusedMedia = async (ev: Event) => {
+  #onClickRestoreSelected = async (ev: Event) => {
     const buttonElement = ev.target as UUIButtonElement;
     buttonElement.state = "waiting";
 
-    await EnhancedMediaService.delete({body: this._selection});
+    await EnhancedMediaService.restoreAll({body: this._selection});
 
     if (this.#notificationContext) {
       this.#notificationContext.peek("positive", {
@@ -124,7 +125,7 @@ export class EnhancedRecycleBinDashboardElement extends UmbElementMixin(LitEleme
           <uui-button look="primary" color="warning" label="Restore ALL trashed media" id="clickMe" look="secondary"
                       @click="${this.#onClickRestoreAll}"></uui-button>
           <uui-button look="primary" color="positive" label="Restore selected" id="clickMe" look="secondary"
-                      @click="${this.#onClickDeleteSelectedUnusedMedia}"></uui-button>
+                      @click="${this.#onClickRestoreSelected}"></uui-button>
         </div>
 
         <div id="grid">
