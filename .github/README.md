@@ -8,15 +8,7 @@ This package enhances the media section in Umbraco by adding a new dashboard to 
 <img alt="Unused media dashboard" src="https://github.com/Zeegaan/UnusedMedia/blob/main/.github/img.png">
 It also has a dashboard to see trashed media items, and the functionality to choose multiple media to restore, or restore all of the trashed media.
 
-
-
-<!--
-Including screenshots is a really good idea! 
-
-If you put images into /docs/screenshots, then you would reference them in this readme as, for example:
-
-<img alt="..." src="https://github.com/Zeegaan/UnusedMedia/blob/develop/docs/screenshots/screenshot.png">
--->
+<img alt="Unused media dashboard" src="https://github.com/Zeegaan/UnusedMedia/blob/main/.github/img_1.png">
 
 ## Installation
 
