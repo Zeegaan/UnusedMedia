@@ -3,6 +3,9 @@ import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
 import {UnusedMediaService, UnusedMediaViewModel} from "../api";
 import { UUIButtonElement } from "@umbraco-cms/backoffice/external/uui";
 import { UMB_NOTIFICATION_CONTEXT, UmbNotificationContext } from "@umbraco-cms/backoffice/notification";
+import { UMB_ACTION_EVENT_CONTEXT } from "@umbraco-cms/backoffice/action";
+import { UmbRequestReloadChildrenOfEntityEvent } from "@umbraco-cms/backoffice/entity-action";
+
 
 @customElement('unused-media-dashboard')
 export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
@@ -19,6 +22,7 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
     this.consumeContext(UMB_NOTIFICATION_CONTEXT, (notificationContext) => {
       this.#notificationContext = notificationContext;
     });
+
 
     this._unusedImages = [];
     this._selection = [];
@@ -64,6 +68,12 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
         }
       })
     }
+
+    const eventContext = await this.getContext(UMB_ACTION_EVENT_CONTEXT);
+    eventContext.dispatchEvent(new UmbRequestReloadChildrenOfEntityEvent({
+      entityType: "media-root",
+      unique: null,
+    }))
     buttonElement.state = "success";
   }
 
@@ -78,10 +88,19 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
       this.#notificationContext.peek("positive", {
         data: {
           headline: `Deleted unused media`,
-          message: `Successfully deleted ${this._unusedImages.length} unused media items.`,
+          message: `Successfully deleted ${this._selection.length} unused media items.`,
         }
       })
     }
+
+    const eventContext = await this.getContext(UMB_ACTION_EVENT_CONTEXT);
+
+    eventContext.dispatchEvent(new UmbRequestReloadChildrenOfEntityEvent({
+      entityType: "media-root",
+      unique: null,
+    }))
+
+    this._selection = [];
     buttonElement.state = "success";
   }
 
@@ -103,7 +122,7 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
           <p>This will show unused media by the click of a button</p>
           <uui-button look="primary" color="danger" label="Delete ALL unused media" id="clickMe" look="secondary"
                       @click="${this.#onClickDeleteAllUnusedMedia}"></uui-button>
-          <uui-button look="primary" color="positive" label="Delete selected unused media" id="clickMe" look="secondary"
+          <uui-button look="primary" color="positive" label="Delete selected" id="clickMe" look="secondary"
                       @click="${this.#onClickDeleteSelectedUnusedMedia}"></uui-button>
         </div>
 
