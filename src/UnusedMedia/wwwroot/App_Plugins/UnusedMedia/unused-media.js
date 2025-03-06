@@ -23,10 +23,28 @@ const a = [
     ]
   }
 ], n = [
+  {
+    name: "Recycle bin dashboard",
+    alias: "EnhancedRecycleBin.Dashboard",
+    type: "dashboard",
+    js: () => import("./recycle-bin-dashboard.element-DRCsWvPF.js"),
+    meta: {
+      label: "EnhancedRecycleBin",
+      pathname: "enhanced-recycle-bin"
+    },
+    conditions: [
+      {
+        alias: "Umb.Condition.SectionAlias",
+        match: "Umb.Section.Media"
+      }
+    ]
+  }
+], i = [
   ...a,
-  ...e
+  ...e,
+  ...n
 ];
 export {
-  n as manifests
+  i as manifests
 };
 //# sourceMappingURL=unused-media.js.map

@@ -1,14 +1,14 @@
 import { LitElement, css, html, customElement, state } from "@umbraco-cms/backoffice/external/lit";
 import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
-import {UnusedMediaService, UnusedMediaViewModel} from "../api";
+import {UnusedMediaService, UnusedMediaViewModel} from "../../api";
 import { UUIButtonElement } from "@umbraco-cms/backoffice/external/uui";
 import { UMB_NOTIFICATION_CONTEXT, UmbNotificationContext } from "@umbraco-cms/backoffice/notification";
 import { UMB_ACTION_EVENT_CONTEXT } from "@umbraco-cms/backoffice/action";
 import { UmbRequestReloadChildrenOfEntityEvent } from "@umbraco-cms/backoffice/entity-action";
 
 
-@customElement('unused-media-dashboard')
-export class UnusedMediaDashboardElement extends UmbElementMixin(LitElement) {
+@customElement('enhanced-recycle-bin-dashboard')
+export class EnhancedRecycleBinDashboardElement extends UmbElementMixin(LitElement) {
 
   @state()
   private _unusedImages: Array<UnusedMediaViewModel>;
@@ -129,7 +129,7 @@ export class UnusedMediaDashboardElement extends UmbElementMixin(LitElement) {
 
         <div id="grid">
           ${this._unusedImages.map((image) => {
-            return html`
+      return html`
                               <uui-card-media
                                 .name="${image.name}"
                                 selectable="true"
@@ -144,7 +144,7 @@ export class UnusedMediaDashboardElement extends UmbElementMixin(LitElement) {
                                 style="width: 300px;height: 300px; display:block"
                                 icon=${image.icon}></umb-imaging-thumbnail>
                             </uui-card-media>`
-          })}
+    })}
         </div>
       </uui-box>
     `;
@@ -165,10 +165,4 @@ export class UnusedMediaDashboardElement extends UmbElementMixin(LitElement) {
         }`
 }
 
-export default UnusedMediaDashboardElement;
-
-declare global {
-  interface HTMLElementTagNameMap {
-    'example-dashboard': UnusedMediaDashboardElement;
-  }
-}
+export default EnhancedRecycleBinDashboardElement;
