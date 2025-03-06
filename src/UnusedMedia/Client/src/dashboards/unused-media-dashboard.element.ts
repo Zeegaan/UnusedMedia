@@ -58,8 +58,6 @@ export class UnusedMediaDashboardElement extends UmbElementMixin(LitElement) {
     buttonElement.state = "waiting";
 
     await UnusedMediaService.delete({body: this._unusedImages});
-    await this.getUnusedMedia();
-
     if (this.#notificationContext) {
       this.#notificationContext.peek("positive", {
         data: {
@@ -73,7 +71,10 @@ export class UnusedMediaDashboardElement extends UmbElementMixin(LitElement) {
     eventContext.dispatchEvent(new UmbRequestReloadChildrenOfEntityEvent({
       entityType: "media-root",
       unique: null,
-    }))
+    }));
+
+    await this.getUnusedMedia();
+
     buttonElement.state = "success";
   }
 
@@ -82,7 +83,6 @@ export class UnusedMediaDashboardElement extends UmbElementMixin(LitElement) {
     buttonElement.state = "waiting";
 
     await UnusedMediaService.delete({body: this._selection});
-    await this.getUnusedMedia();
 
     if (this.#notificationContext) {
       this.#notificationContext.peek("positive", {
@@ -101,6 +101,7 @@ export class UnusedMediaDashboardElement extends UmbElementMixin(LitElement) {
     }))
 
     this._selection = [];
+    await this.getUnusedMedia();
     buttonElement.state = "success";
   }
 
@@ -130,14 +131,14 @@ export class UnusedMediaDashboardElement extends UmbElementMixin(LitElement) {
           ${this._unusedImages.map((image) => {
             return html`
                               <uui-card-media
-                                name="${image.name}"
+                                .name="${image.name}"
                                 selectable="true"
                                 select-only="true"
                                 @selected=${() => this.#onSelected(image)}
                                 @deselected=${() => this.#onDeselected(image)}
                                 ?selected=${this._selection.includes(image)}>
                               <umb-imaging-thumbnail
-                                unique="${image.key}"
+                                .unique="${image.key}"
                                 width="300"
                                 height="300"
                                 style="width: 300px;height: 300px; display:block"
