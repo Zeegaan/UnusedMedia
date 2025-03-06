@@ -3,30 +3,30 @@ const a = [
     name: "Unused Media Entrypoint",
     alias: "UnusedMedia.Entrypoint",
     type: "backofficeEntryPoint",
-    js: () => import("./entrypoint-B0ka2_S3.js")
+    js: () => import("./entrypoint-D-USCR44.js")
   }
-], n = [
+], e = [
   {
     name: "Unused Media Dashboard",
     alias: "UnusedMedia.Dashboard",
     type: "dashboard",
-    js: () => import("./dashboard.element-BMDrlC0t.js"),
+    js: () => import("./dashboard.element-BKqj_5YQ.js"),
     meta: {
-      label: "Example Dashboard",
-      pathname: "example-dashboard"
+      label: "Unused Media",
+      pathname: "unused-media"
     },
     conditions: [
       {
         alias: "Umb.Condition.SectionAlias",
-        match: "Umb.Section.Content"
+        match: "Umb.Section.Media"
       }
     ]
   }
-], e = [
+], n = [
   ...a,
-  ...n
+  ...e
 ];
 export {
-  e as manifests
+  n as manifests
 };
 //# sourceMappingURL=unused-media.js.map

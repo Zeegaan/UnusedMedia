@@ -5,13 +5,13 @@ export const manifests: Array<UmbExtensionManifest> = [
     type: 'dashboard',
     js: () => import("./dashboard.element"),
     meta: {
-      label: "Example Dashboard",
-      pathname: "example-dashboard"
+      label: "Unused Media",
+      pathname: "unused-media"
     },
     conditions: [
       {
         alias: 'Umb.Condition.SectionAlias',
-        match: 'Umb.Section.Content',
+        match: 'Umb.Section.Media',
       }
     ],
   }

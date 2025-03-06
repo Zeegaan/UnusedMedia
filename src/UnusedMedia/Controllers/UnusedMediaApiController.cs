@@ -1,8 +1,11 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Umbraco.Cms.Core.Models;
+using Umbraco.Cms.Core.Models.Entities;
 using Umbraco.Cms.Core.Models.Membership;
 using Umbraco.Cms.Core.Security;
+using Umbraco.Cms.Core.Services;
 
 namespace UnusedMedia.Controllers
 {
@@ -10,34 +13,48 @@ namespace UnusedMedia.Controllers
     [ApiExplorerSettings(GroupName = "UnusedMedia")]
     public class UnusedMediaApiController : UnusedMediaApiControllerBase
     {
-        private readonly IBackOfficeSecurityAccessor _backOfficeSecurityAccessor;
+        private readonly IEntityService _entityService;
+        private readonly IMediaEditingService _mediaEditingService;
+        private readonly IRelationService _relationService;
 
-        public UnusedMediaApiController(IBackOfficeSecurityAccessor backOfficeSecurityAccessor)
+        public UnusedMediaApiController(
+            IEntityService entityService,
+            IMediaEditingService mediaEditingService,
+            IRelationService relationService)
         {
-            _backOfficeSecurityAccessor = backOfficeSecurityAccessor;
+            _entityService = entityService;
+            _mediaEditingService = mediaEditingService;
+            _relationService = relationService;
         }
 
-        [HttpGet("ping")]
-        [ProducesResponseType<string>(StatusCodes.Status200OK)]
-        public string Ping() => "Pong";
-
-        [HttpGet("whatsTheTimeMrWolf")]
-        [ProducesResponseType(typeof(DateTime), 200)]
-        public DateTime WhatsTheTimeMrWolf() => DateTime.Now;
-
-        [HttpGet("whatsMyName")]
-        [ProducesResponseType<string>(StatusCodes.Status200OK)]
-        public string WhatsMyName()
+        [HttpGet("all")]
+        [ProducesResponseType<UnusedMediaViewModel>(StatusCodes.Status200OK)]
+        public IActionResult UnusedMedia()
         {
-            // So we can see a long request in the dashboard with a spinning progress wheel
-            Thread.Sleep(2000);
+            IEnumerable<IMediaEntitySlim> media = _entityService
+                .GetAll(UmbracoObjectTypes.Media, Array.Empty<int>())
+                .OfType<IMediaEntitySlim>()
+                .ToArray();
 
-            var currentUser = _backOfficeSecurityAccessor.BackOfficeSecurity?.CurrentUser;
-            return currentUser?.Name ?? "I have no idea who you are";
+            var unrelatedMedia = media.Where(x => _relationService.IsRelated(x.Id) is false);
+            return Ok(new UnusedMediaViewModel { Items = unrelatedMedia.Select(x => x.Key) });
         }
 
-        [HttpGet("whoAmI")]
-        [ProducesResponseType<IUser>(StatusCodes.Status200OK)]
-        public IUser? WhoAmI() => _backOfficeSecurityAccessor.BackOfficeSecurity?.CurrentUser;
+        public class UnusedMediaViewModel
+        {
+            public IEnumerable<Guid> Items { get; set; }
+        }
+
+        [HttpPost("delete")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public async Task<IActionResult> Delete(List<Guid> mediaKeys)
+        {
+            foreach (var key in mediaKeys)
+            {
+                await _mediaEditingService.MoveToRecycleBinAsync(key, Umbraco.Cms.Core.Constants.Security.SuperUserKey);
+            }
+
+            return Ok();
+        }
     }
 }
