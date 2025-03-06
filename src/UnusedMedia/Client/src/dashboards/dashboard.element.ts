@@ -1,6 +1,6 @@
 import { LitElement, css, html, customElement, state } from "@umbraco-cms/backoffice/external/lit";
 import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
-import { UnusedMediaService } from "../api";
+import {UnusedMediaService, UnusedMediaViewModel} from "../api";
 import { UUIButtonElement } from "@umbraco-cms/backoffice/external/uui";
 import { UMB_NOTIFICATION_CONTEXT, UmbNotificationContext } from "@umbraco-cms/backoffice/notification";
 
@@ -8,10 +8,10 @@ import { UMB_NOTIFICATION_CONTEXT, UmbNotificationContext } from "@umbraco-cms/b
 export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
 
   @state()
-  private _unusedImages: Array<string>;
+  private _unusedImages: Array<UnusedMediaViewModel>;
 
   @state()
-  private _selection: Array<string>;
+  private _selection: Array<UnusedMediaViewModel>;
 
   constructor() {
     super();
@@ -45,11 +45,11 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
 
     if (data !== undefined) {
       // @ts-ignore
-      this._unusedImages = data.keys;
+      this._unusedImages = data.items;
     }
   }
 
-  #onClickDeleteUnusedMedia = async (ev: Event) => {
+  #onClickDeleteAllUnusedMedia = async (ev: Event) => {
     const buttonElement = ev.target as UUIButtonElement;
     buttonElement.state = "waiting";
 
@@ -67,12 +67,30 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
     buttonElement.state = "success";
   }
 
-  #onSelected(item: string) {
+  #onClickDeleteSelectedUnusedMedia = async (ev: Event) => {
+    const buttonElement = ev.target as UUIButtonElement;
+    buttonElement.state = "waiting";
+
+    await UnusedMediaService.delete({body: this._selection});
+    await this.getUnusedMedia();
+
+    if (this.#notificationContext) {
+      this.#notificationContext.peek("positive", {
+        data: {
+          headline: `Deleted unused media`,
+          message: `Successfully deleted ${this._unusedImages.length} unused media items.`,
+        }
+      })
+    }
+    buttonElement.state = "success";
+  }
+
+  #onSelected(item: UnusedMediaViewModel) {
     this._selection.push(item);
     this.requestUpdate("_selection");
   }
 
-  #onDeselected(item: string) {
+  #onDeselected(item: UnusedMediaViewModel) {
     this._selection = this._selection.filter((value) => value !== item);
   }
 
@@ -84,25 +102,27 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
           <h1>Welcome to the improved media dashboard</h1>
           <p>This will show unused media by the click of a button</p>
           <uui-button look="primary" color="danger" label="Delete ALL unused media" id="clickMe" look="secondary"
-                      @click="${this.#onClickDeleteUnusedMedia}"></uui-button>
+                      @click="${this.#onClickDeleteAllUnusedMedia}"></uui-button>
+          <uui-button look="primary" color="positive" label="Delete selected unused media" id="clickMe" look="secondary"
+                      @click="${this.#onClickDeleteSelectedUnusedMedia}"></uui-button>
         </div>
 
         <div id="grid">
           ${this._unusedImages.map((image) => {
             return html`
                               <uui-card-media
-                                name="${image}"
-                                data-mark="${image}"
+                                name="${image.name}"
                                 selectable="true"
                                 select-only="true"
                                 @selected=${() => this.#onSelected(image)}
                                 @deselected=${() => this.#onDeselected(image)}
                                 ?selected=${this._selection.includes(image)}>
                               <umb-imaging-thumbnail
-                                unique="${image}"
+                                unique="${image.key}"
                                 width="300"
                                 height="300"
-                                style="max-width: 300px;max-height: 300px; display:block"></umb-imaging-thumbnail>
+                                style="width: 300px;height: 300px; display:block"
+                                icon=${image.icon}></umb-imaging-thumbnail>
                             </uui-card-media>`
           })}
         </div>

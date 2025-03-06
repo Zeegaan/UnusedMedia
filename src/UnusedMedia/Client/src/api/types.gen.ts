@@ -9,7 +9,9 @@ export type NotificationHeaderModel = {
 };
 
 export type UnusedMediaViewModel = {
-    keys: Array<(string)>;
+    name: string;
+    key: string;
+    icon: string;
 };
 
 export type UnusedMediaResponse = ((UnusedMediaViewModel));
@@ -17,7 +19,7 @@ export type UnusedMediaResponse = ((UnusedMediaViewModel));
 export type UnusedMediaError = (unknown);
 
 export type DeleteData = {
-    body?: Array<(string)>;
+    body?: Array<(UnusedMediaViewModel)>;
 };
 
 export type DeleteResponse = (string);

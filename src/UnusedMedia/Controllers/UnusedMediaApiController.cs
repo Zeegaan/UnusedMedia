@@ -1,10 +1,9 @@
 using Asp.Versioning;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Umbraco.Cms.Api.Common.ViewModels.Pagination;
 using Umbraco.Cms.Core.Models;
 using Umbraco.Cms.Core.Models.Entities;
-using Umbraco.Cms.Core.Models.Membership;
-using Umbraco.Cms.Core.Security;
 using Umbraco.Cms.Core.Services;
 using UnusedMedia.ViewModels;
 
@@ -21,7 +20,8 @@ namespace UnusedMedia.Controllers
         public UnusedMediaApiController(
             IEntityService entityService,
             IMediaEditingService mediaEditingService,
-            IRelationService relationService)
+            IRelationService relationService,
+            IMediaTypeService mediaTypeService)
         {
             _entityService = entityService;
             _mediaEditingService = mediaEditingService;
@@ -38,14 +38,25 @@ namespace UnusedMedia.Controllers
                 .ToArray();
 
             var unrelatedMedia = media.Where(x => _relationService.IsRelated(x.Id) is false);
-            return Ok(new UnusedMediaViewModel { Keys = unrelatedMedia.Select(x => x.Key) });
+
+            return Ok(new PagedViewModel<UnusedMediaViewModel>() { Items = unrelatedMedia.Select(Map) });
+        }
+
+        private UnusedMediaViewModel Map(IMediaEntitySlim source)
+        {
+            return new UnusedMediaViewModel
+            {
+                Key = source.Key,
+                Name = source.Name ?? "Could not find name",
+                Icon = source.ContentTypeIcon ?? Umbraco.Cms.Core.Constants.Icons.MediaType
+            };
         }
 
         [HttpPost("delete")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> Delete(List<Guid> mediaKeys)
+        public async Task<IActionResult> Delete(List<UnusedMediaViewModel> mediaKeys)
         {
-            foreach (var key in mediaKeys)
+            foreach (var key in mediaKeys.Select(x => x.Key))
             {
                 await _mediaEditingService.MoveToRecycleBinAsync(key, Umbraco.Cms.Core.Constants.Security.SuperUserKey);
             }
