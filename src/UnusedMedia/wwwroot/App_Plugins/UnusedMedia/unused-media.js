@@ -3,7 +3,7 @@ const a = [
     name: "Unused Media Entrypoint",
     alias: "UnusedMedia.Entrypoint",
     type: "backofficeEntryPoint",
-    js: () => import("./entrypoint-D-USCR44.js")
+    js: () => import("./entrypoint-Ck-h-HB4.js")
   }
 ], e = [
   {
