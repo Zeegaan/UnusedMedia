@@ -28,7 +28,7 @@ namespace UnusedMedia.Controllers
         }
 
         [HttpGet("all")]
-        [ProducesResponseType<UnusedMediaViewModel>(StatusCodes.Status200OK)]
+        [ProducesResponseType<MediaViewModel>(StatusCodes.Status200OK)]
         public IActionResult UnusedMedia()
         {
             IEnumerable<IMediaEntitySlim> media = _entityService
@@ -38,12 +38,12 @@ namespace UnusedMedia.Controllers
 
             var unrelatedMedia = media.Where(x => _relationService.IsRelated(x.Id) is false);
 
-            return Ok(new PagedViewModel<UnusedMediaViewModel>() { Items = unrelatedMedia.Select(Map) });
+            return Ok(new PagedViewModel<MediaViewModel>() { Items = unrelatedMedia.Select(Map) });
         }
 
-        private UnusedMediaViewModel Map(IMediaEntitySlim source)
+        private MediaViewModel Map(IMediaEntitySlim source)
         {
-            return new UnusedMediaViewModel
+            return new MediaViewModel
             {
                 Key = source.Key,
                 Name = source.Name ?? "Could not find name",
@@ -53,7 +53,7 @@ namespace UnusedMedia.Controllers
 
         [HttpPost("delete")]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        public async Task<IActionResult> Delete(List<UnusedMediaViewModel> mediaKeys)
+        public async Task<IActionResult> Delete(List<MediaViewModel> mediaKeys)
         {
             foreach (var key in mediaKeys.Select(x => x.Key))
             {
@@ -64,8 +64,8 @@ namespace UnusedMedia.Controllers
         }
 
         [HttpPut("restore")]
-        [ProducesResponseType<UnusedMediaViewModel>(StatusCodes.Status200OK)]
-        public async Task<IActionResult> RestoreAll(List<UnusedMediaViewModel> medias)
+        [ProducesResponseType<MediaViewModel>(StatusCodes.Status200OK)]
+        public async Task<IActionResult> RestoreAll(List<MediaViewModel> medias)
         {
             foreach (var key in medias.Select(x => x.Key))
             {
@@ -76,14 +76,14 @@ namespace UnusedMedia.Controllers
         }
 
         [HttpGet("get-recycle-bin")]
-        [ProducesResponseType<UnusedMediaViewModel>(StatusCodes.Status200OK)]
+        [ProducesResponseType<MediaViewModel>(StatusCodes.Status200OK)]
         public async Task<IActionResult> RecycleBinMedia()
         {
             IEntitySlim[] rootEntities = _entityService
                 .GetPagedTrashedChildren(Umbraco.Cms.Core.Constants.System.RecycleBinMediaKey, UmbracoObjectTypes.Media, 0, 100, out var totalItems)
                 .ToArray();
 
-            return Ok(new PagedViewModel<UnusedMediaViewModel>() { Items = rootEntities.Select(x => (IMediaEntitySlim)x).Select(Map) });
+            return Ok(new PagedViewModel<MediaViewModel>() { Items = rootEntities.Select(x => (IMediaEntitySlim)x).Select(Map) });
         }
     }
 }

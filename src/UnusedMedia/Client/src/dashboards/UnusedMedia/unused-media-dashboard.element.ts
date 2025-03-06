@@ -1,6 +1,6 @@
 import { LitElement, css, html, customElement, state } from "@umbraco-cms/backoffice/external/lit";
 import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
-import {EnhancedMediaService, UnusedMediaViewModel} from "../../api";
+import {EnhancedMediaService, MediaViewModel} from "../../api";
 import { UUIButtonElement } from "@umbraco-cms/backoffice/external/uui";
 import { UMB_NOTIFICATION_CONTEXT, UmbNotificationContext } from "@umbraco-cms/backoffice/notification";
 import { UMB_ACTION_EVENT_CONTEXT } from "@umbraco-cms/backoffice/action";
@@ -11,10 +11,10 @@ import { UmbRequestReloadChildrenOfEntityEvent } from "@umbraco-cms/backoffice/e
 export class UnusedMediaDashboardElement extends UmbElementMixin(LitElement) {
 
   @state()
-  private _unusedImages: Array<UnusedMediaViewModel>;
+  private _unusedImages: Array<MediaViewModel>;
 
   @state()
-  private _selection: Array<UnusedMediaViewModel>;
+  private _selection: Array<MediaViewModel>;
 
   constructor() {
     super();
@@ -106,12 +106,12 @@ export class UnusedMediaDashboardElement extends UmbElementMixin(LitElement) {
     buttonElement.state = "success";
   }
 
-  #onSelected(item: UnusedMediaViewModel) {
+  #onSelected(item: MediaViewModel) {
     this._selection.push(item);
     this.requestUpdate("_selection");
   }
 
-  #onDeselected(item: UnusedMediaViewModel) {
+  #onDeselected(item: MediaViewModel) {
     this._selection = this._selection.filter((value) => value !== item);
   }
 

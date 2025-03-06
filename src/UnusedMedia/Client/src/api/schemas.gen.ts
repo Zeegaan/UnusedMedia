@@ -5,24 +5,7 @@ export const EventMessageTypeModelSchema = {
     type: 'string'
 } as const;
 
-export const NotificationHeaderModelSchema = {
-    required: ['category', 'message', 'type'],
-    type: 'object',
-    properties: {
-        message: {
-            type: 'string'
-        },
-        category: {
-            type: 'string'
-        },
-        type: {
-            '$ref': '#/components/schemas/EventMessageTypeModel'
-        }
-    },
-    additionalProperties: false
-} as const;
-
-export const UnusedMediaViewModelSchema = {
+export const MediaViewModelSchema = {
     required: ['icon', 'key', 'name'],
     type: 'object',
     properties: {
@@ -35,6 +18,23 @@ export const UnusedMediaViewModelSchema = {
         },
         icon: {
             type: 'string'
+        }
+    },
+    additionalProperties: false
+} as const;
+
+export const NotificationHeaderModelSchema = {
+    required: ['category', 'message', 'type'],
+    type: 'object',
+    properties: {
+        message: {
+            type: 'string'
+        },
+        category: {
+            type: 'string'
+        },
+        type: {
+            '$ref': '#/components/schemas/EventMessageTypeModel'
         }
     },
     additionalProperties: false

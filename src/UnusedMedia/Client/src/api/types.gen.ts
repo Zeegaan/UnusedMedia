@@ -2,38 +2,38 @@
 
 export type EventMessageTypeModel = 'Default' | 'Info' | 'Error' | 'Success' | 'Warning';
 
+export type MediaViewModel = {
+    name: string;
+    key: string;
+    icon: string;
+};
+
 export type NotificationHeaderModel = {
     message: string;
     category: string;
     type: EventMessageTypeModel;
 };
 
-export type UnusedMediaViewModel = {
-    name: string;
-    key: string;
-    icon: string;
-};
-
-export type UnusedMediaResponse = ((UnusedMediaViewModel));
+export type UnusedMediaResponse = ((MediaViewModel));
 
 export type UnusedMediaError = (unknown);
 
 export type DeleteData = {
-    body?: Array<(UnusedMediaViewModel)>;
+    body?: Array<(MediaViewModel)>;
 };
 
 export type DeleteResponse = (string);
 
 export type DeleteError = (unknown);
 
-export type RecycleBinMediaResponse = ((UnusedMediaViewModel));
+export type RecycleBinMediaResponse = ((MediaViewModel));
 
 export type RecycleBinMediaError = (unknown);
 
 export type RestoreAllData = {
-    body?: Array<(UnusedMediaViewModel)>;
+    body?: Array<(MediaViewModel)>;
 };
 
-export type RestoreAllResponse = ((UnusedMediaViewModel));
+export type RestoreAllResponse = ((MediaViewModel));
 
 export type RestoreAllError = (unknown);

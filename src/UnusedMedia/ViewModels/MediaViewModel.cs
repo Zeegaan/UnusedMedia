@@ -1,6 +1,6 @@
 ﻿namespace UnusedMedia.ViewModels;
 
-public class UnusedMediaViewModel
+public class MediaViewModel
 {
     public string Name { get; set; }
 
