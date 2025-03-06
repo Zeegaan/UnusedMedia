@@ -26,14 +26,14 @@ export class EnhancedRecycleBinDashboardElement extends UmbElementMixin(LitEleme
 
     this._unusedImages = [];
     this._selection = [];
-    this.getUnusedMedia();
+    this.getRecycleBinMedia();
   }
 
   #notificationContext: UmbNotificationContext | undefined = undefined;
 
-  getUnusedMedia = async () => {
+  getRecycleBinMedia = async () => {
 
-    const { data, error } = await EnhancedMediaService.unusedMedia();
+    const { data, error } = await EnhancedMediaService.recycleBinMedia();
 
     if (error) {
       if (this.#notificationContext) {
@@ -57,7 +57,7 @@ export class EnhancedRecycleBinDashboardElement extends UmbElementMixin(LitEleme
     const buttonElement = ev.target as UUIButtonElement;
     buttonElement.state = "waiting";
 
-    await EnhancedMediaService.delete({body: this._unusedImages});
+    await EnhancedMediaService.restoreAll({body: this._unusedImages});
     if (this.#notificationContext) {
       this.#notificationContext.peek("positive", {
         data: {
@@ -73,7 +73,7 @@ export class EnhancedRecycleBinDashboardElement extends UmbElementMixin(LitEleme
       unique: null,
     }));
 
-    await this.getUnusedMedia();
+    await this.getRecycleBinMedia();
 
     buttonElement.state = "success";
   }
@@ -101,7 +101,7 @@ export class EnhancedRecycleBinDashboardElement extends UmbElementMixin(LitEleme
     }))
 
     this._selection = [];
-    await this.getUnusedMedia();
+    await this.getRecycleBinMedia();
     buttonElement.state = "success";
   }
 

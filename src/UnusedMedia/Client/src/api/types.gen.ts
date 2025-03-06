@@ -25,3 +25,15 @@ export type DeleteData = {
 export type DeleteResponse = (string);
 
 export type DeleteError = (unknown);
+
+export type RecycleBinMediaResponse = ((UnusedMediaViewModel));
+
+export type RecycleBinMediaError = (unknown);
+
+export type RestoreAllData = {
+    body?: Array<(UnusedMediaViewModel)>;
+};
+
+export type RestoreAllResponse = ((UnusedMediaViewModel));
+
+export type RestoreAllError = (unknown);

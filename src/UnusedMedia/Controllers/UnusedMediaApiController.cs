@@ -20,8 +20,7 @@ namespace UnusedMedia.Controllers
         public UnusedMediaApiController(
             IEntityService entityService,
             IMediaEditingService mediaEditingService,
-            IRelationService relationService,
-            IMediaTypeService mediaTypeService)
+            IRelationService relationService)
         {
             _entityService = entityService;
             _mediaEditingService = mediaEditingService;
@@ -63,5 +62,29 @@ namespace UnusedMedia.Controllers
 
             return Ok();
         }
+
+        [HttpPut("restore")]
+        [ProducesResponseType<UnusedMediaViewModel>(StatusCodes.Status200OK)]
+        public async Task<IActionResult> RestoreAll(List<UnusedMediaViewModel> medias)
+        {
+            foreach (var key in medias.Select(x => x.Key))
+            {
+                await _mediaEditingService.RestoreAsync(key, null, Umbraco.Cms.Core.Constants.Security.SuperUserKey);
+            }
+
+            return Ok();
+        }
+
+        [HttpGet("get-recycle-bin")]
+        [ProducesResponseType<UnusedMediaViewModel>(StatusCodes.Status200OK)]
+        public async Task<IActionResult> RecycleBinMedia()
+        {
+            IEntitySlim[] rootEntities = _entityService
+                .GetPagedTrashedChildren(Umbraco.Cms.Core.Constants.System.RecycleBinMediaKey, UmbracoObjectTypes.Media, 0, 100, out var totalItems)
+                .ToArray();
+
+            return Ok(new PagedViewModel<UnusedMediaViewModel>() { Items = rootEntities.Select(x => (IMediaEntitySlim)x).Select(Map) });
+        }
+
     }
 }

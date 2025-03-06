@@ -3,14 +3,14 @@ const a = [
     name: "Unused Media Entrypoint",
     alias: "UnusedMedia.Entrypoint",
     type: "backofficeEntryPoint",
-    js: () => import("./entrypoint-DManBCJP.js")
+    js: () => import("./entrypoint-B6uDc8CJ.js")
   }
 ], e = [
   {
     name: "Unused Media Dashboard",
     alias: "UnusedMedia.Dashboard",
     type: "dashboard",
-    js: () => import("./unused-media-dashboard.element-Bgi-6Qze.js"),
+    js: () => import("./unused-media-dashboard.element-CBZ3UlHJ.js"),
     meta: {
       label: "Unused Media",
       pathname: "unused-media"
@@ -27,7 +27,7 @@ const a = [
     name: "Recycle bin dashboard",
     alias: "EnhancedRecycleBin.Dashboard",
     type: "dashboard",
-    js: () => import("./recycle-bin-dashboard.element-xKiwf-Gl.js"),
+    js: () => import("./recycle-bin-dashboard.element-Bt0Tgjip.js"),
     meta: {
       label: "EnhancedRecycleBin",
       pathname: "enhanced-recycle-bin"
