@@ -1,0 +1,14 @@
+{
+    "$schema": "https://marketplace.umbraco.com/umbraco-marketplace-schema.json", 
+    "AuthorDetails": {
+      "Name": "Nikolaj Geisle",
+      "ImageUrl": "https://github.com/Zeegaan.png"
+    },
+    "Category": "",
+    "Description": "",
+    "LicenseTypes": [ "Free" ],
+    "IssueTrackerUrl": "https://github.com/Zeegaan/UnusedMedia/issues",
+    "PackageType": "Package",
+    "Tags": [],
+    "Title": "Unused Media "
+  }
