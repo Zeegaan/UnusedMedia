@@ -8,7 +8,7 @@ import { UmbRequestReloadChildrenOfEntityEvent } from "@umbraco-cms/backoffice/e
 
 
 @customElement('unused-media-dashboard')
-export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
+export class UnusedMediaDashboardElement extends UmbElementMixin(LitElement) {
 
   @state()
   private _unusedImages: Array<UnusedMediaViewModel>;
@@ -164,10 +164,10 @@ export class ExampleDashboardElement extends UmbElementMixin(LitElement) {
         }`
 }
 
-export default ExampleDashboardElement;
+export default UnusedMediaDashboardElement;
 
 declare global {
   interface HTMLElementTagNameMap {
-    'example-dashboard': ExampleDashboardElement;
+    'example-dashboard': UnusedMediaDashboardElement;
   }
 }
