@@ -5,7 +5,7 @@ export const manifests: Array<UmbExtensionManifest> = [
     type: 'dashboard',
     js: () => import("./recycle-bin-dashboard.element.ts"),
     meta: {
-      label: "EnhancedRecycleBin",
+      label: "Enhanced Recycle Bin",
       pathname: "enhanced-recycle-bin"
     },
     conditions: [

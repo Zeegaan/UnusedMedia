@@ -131,20 +131,17 @@ export class UnusedMediaDashboardElement extends UmbLitElement {
         <div id="grid">
           ${this._unusedImages.map((image) => {
             return html`
-                              <uui-card-media
-                                .name="${image.name}"
-                                selectable="true"
-                                select-only="true"
-                                @selected=${() => this.#onSelected(image)}
-                                @deselected=${() => this.#onDeselected(image)}
-                                ?selected=${this._selection.includes(image)}>
-                              <umb-imaging-thumbnail
-                                .unique="${image.key}"
-                                width="300"
-                                height="300"
-                                style="width: 300px;height: 300px; display:block"
-                                .icon=${image.icon}></umb-imaging-thumbnail>
-                            </uui-card-media>`
+              <uui-card-media
+                .name="${image.name}"
+                selectable
+                select-only
+                @selected=${() => this.#onSelected(image)}
+                @deselected=${() => this.#onDeselected(image)}
+                ?selected=${this._selection.includes(image)}>
+                <umb-imaging-thumbnail
+                  .unique="${image.key}"
+                  .icon=${image.icon}></umb-imaging-thumbnail>
+              </uui-card-media>`
           })}
         </div>
       </uui-box>
@@ -152,18 +149,23 @@ export class UnusedMediaDashboardElement extends UmbLitElement {
   }
 
   static styles = css`
-        :host {
-            padding: 20px;
-            display: block;
-            box-sizing: border-box;
-        }
+    :host {
+      padding: 20px;
+      display: block;
+      box-sizing: border-box;
+    }
 
-        #grid {
-            display: grid;
-            grid-template-columns: auto auto auto auto;
-            gap: 10px;
+    #grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 200px));
+      gap: var(--uui-size-space-5, 18px);
+    }
 
-        }`
+    uui-card-media {
+      width: 200px;
+      height: 200px;
+    }
+  `
 }
 
 export default UnusedMediaDashboardElement;
