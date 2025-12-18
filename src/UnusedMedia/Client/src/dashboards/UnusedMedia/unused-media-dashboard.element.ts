@@ -16,6 +16,19 @@ export class UnusedMediaDashboardElement extends UmbLitElement {
   @state()
   private _selection: Array<MediaViewModel>;
 
+  @state()
+  private _searchQuery: string = '';
+
+  private get _filteredImages(): Array<MediaViewModel> {
+    if (!this._searchQuery.trim()) {
+      return this._unusedImages;
+    }
+    const query = this._searchQuery.toLowerCase();
+    return this._unusedImages.filter(image =>
+      image.name.toLowerCase().includes(query)
+    );
+  }
+
   constructor() {
     super();
 
@@ -115,21 +128,34 @@ export class UnusedMediaDashboardElement extends UmbLitElement {
     this._selection = this._selection.filter((value) => value !== item);
   }
 
+  #onSearchInput(e: InputEvent) {
+    this._searchQuery = (e.target as HTMLInputElement).value;
+  }
+
   render() {
     return html`
 
       <uui-box>
-        <div style="padding: 10px">
+        <div id="header">
           <h1>Welcome to the unused media dashboard</h1>
           <p>This will show unused media by the click of a button</p>
-          <uui-button look="primary" color="danger" label="Delete ALL unused media" id="clickMe" look="secondary"
-                      @click="${this.#onClickDeleteAllUnusedMedia}"></uui-button>
-          <uui-button look="primary" color="positive" label="Delete selected" id="clickMe" look="secondary"
-                      @click="${this.#onClickDeleteSelectedUnusedMedia}"></uui-button>
+          <div id="toolbar">
+            <uui-input
+              id="search"
+              placeholder="Search media..."
+              label="Search media"
+              @input="${this.#onSearchInput}">
+              <uui-icon name="icon-search" slot="prepend"></uui-icon>
+            </uui-input>
+            <uui-button look="primary" color="danger" label="Delete ALL unused media"
+                        @click="${this.#onClickDeleteAllUnusedMedia}"></uui-button>
+            <uui-button look="primary" color="positive" label="Delete selected"
+                        @click="${this.#onClickDeleteSelectedUnusedMedia}"></uui-button>
+          </div>
         </div>
 
         <div id="grid">
-          ${this._unusedImages.map((image) => {
+          ${this._filteredImages.map((image) => {
             return html`
               <uui-card-media
                 .name="${image.name}"
@@ -153,6 +179,22 @@ export class UnusedMediaDashboardElement extends UmbLitElement {
       padding: 20px;
       display: block;
       box-sizing: border-box;
+    }
+
+    #header {
+      padding: 10px;
+    }
+
+    #toolbar {
+      display: flex;
+      gap: var(--uui-size-space-3, 12px);
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: var(--uui-size-space-4, 15px);
+    }
+
+    #search {
+      width: 300px;
     }
 
     #grid {

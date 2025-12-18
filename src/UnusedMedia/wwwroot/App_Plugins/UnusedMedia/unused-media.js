@@ -10,7 +10,7 @@ const a = [
     name: "Unused Media Dashboard",
     alias: "UnusedMedia.Dashboard",
     type: "dashboard",
-    js: () => import("./unused-media-dashboard.element-jtW0rdXR.js"),
+    js: () => import("./unused-media-dashboard.element-DViXDEia.js"),
     meta: {
       label: "Unused Media",
       pathname: "unused-media"
@@ -27,7 +27,7 @@ const a = [
     name: "Recycle bin dashboard",
     alias: "EnhancedRecycleBin.Dashboard",
     type: "dashboard",
-    js: () => import("./recycle-bin-dashboard.element-B8ncbLLn.js"),
+    js: () => import("./recycle-bin-dashboard.element-Dp6x0KXC.js"),
     meta: {
       label: "Enhanced Recycle Bin",
       pathname: "enhanced-recycle-bin"
