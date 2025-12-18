@@ -36,7 +36,7 @@ namespace UnusedMedia.Controllers
                 .OfType<IMediaEntitySlim>()
                 .ToArray();
 
-            var unrelatedMedia = media.Where(x => _relationService.IsRelated(x.Id) is false);
+            var unrelatedMedia = media.Where(x => _relationService.IsRelated(x.Id, RelationDirectionFilter.Any) is false);
 
             return Ok(new PagedViewModel<MediaViewModel>() { Items = unrelatedMedia.Select(Map) });
         }
