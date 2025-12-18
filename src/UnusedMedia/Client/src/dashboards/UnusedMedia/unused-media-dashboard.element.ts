@@ -1,14 +1,14 @@
-import { LitElement, css, html, customElement, state } from "@umbraco-cms/backoffice/external/lit";
-import { UmbElementMixin } from "@umbraco-cms/backoffice/element-api";
-import {EnhancedMediaService, MediaViewModel} from "../../api";
-import { UUIButtonElement } from "@umbraco-cms/backoffice/external/uui";
+import { css, html } from "lit";
+import { customElement, state } from "lit/decorators.js";
+import { UmbLitElement } from "@umbraco-cms/backoffice/lit-element";
+import { EnhancedMediaService, MediaViewModel } from "../../api";
 import { UMB_NOTIFICATION_CONTEXT, UmbNotificationContext } from "@umbraco-cms/backoffice/notification";
 import { UMB_ACTION_EVENT_CONTEXT } from "@umbraco-cms/backoffice/action";
 import { UmbRequestReloadChildrenOfEntityEvent } from "@umbraco-cms/backoffice/entity-action";
 
 
 @customElement('unused-media-dashboard')
-export class UnusedMediaDashboardElement extends UmbElementMixin(LitElement) {
+export class UnusedMediaDashboardElement extends UmbLitElement {
 
   @state()
   private _unusedImages: Array<MediaViewModel>;
@@ -55,7 +55,7 @@ export class UnusedMediaDashboardElement extends UmbElementMixin(LitElement) {
   }
 
   #onClickDeleteAllUnusedMedia = async (ev: Event) => {
-    const buttonElement = ev.target as UUIButtonElement;
+    const buttonElement = ev.target as HTMLElement & { state: string };
     buttonElement.state = "waiting";
 
     await EnhancedMediaService.delete({body: this._unusedImages});
@@ -69,7 +69,7 @@ export class UnusedMediaDashboardElement extends UmbElementMixin(LitElement) {
     }
 
     const eventContext = await this.getContext(UMB_ACTION_EVENT_CONTEXT);
-    eventContext.dispatchEvent(new UmbRequestReloadChildrenOfEntityEvent({
+    eventContext?.dispatchEvent(new UmbRequestReloadChildrenOfEntityEvent({
       entityType: "media-root",
       unique: null,
     }));
@@ -80,7 +80,7 @@ export class UnusedMediaDashboardElement extends UmbElementMixin(LitElement) {
   }
 
   #onClickDeleteSelectedUnusedMedia = async (ev: Event) => {
-    const buttonElement = ev.target as UUIButtonElement;
+    const buttonElement = ev.target as HTMLElement & { state: string };
     buttonElement.state = "waiting";
 
     await EnhancedMediaService.delete({body: this._selection});
@@ -96,10 +96,10 @@ export class UnusedMediaDashboardElement extends UmbElementMixin(LitElement) {
 
     const eventContext = await this.getContext(UMB_ACTION_EVENT_CONTEXT);
 
-    eventContext.dispatchEvent(new UmbRequestReloadChildrenOfEntityEvent({
+    eventContext?.dispatchEvent(new UmbRequestReloadChildrenOfEntityEvent({
       entityType: "media-root",
       unique: null,
-    }))
+    }));
 
     this._selection = [];
     await this.getUnusedMedia();
