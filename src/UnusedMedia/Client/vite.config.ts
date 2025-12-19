@@ -12,6 +12,9 @@ export default defineConfig({
     sourcemap: true,
     rollupOptions: {
       external: [/^@umbraco/],
+      output: {
+        inlineDynamicImports: true,
+      },
     },
   }
 });
