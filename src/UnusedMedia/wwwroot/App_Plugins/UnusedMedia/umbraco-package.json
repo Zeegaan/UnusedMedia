@@ -1,7 +1,7 @@
 {
   "id": "UnusedMedia",
   "name": "UnusedMedia",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "allowPackageTelemetry": true,
   "extensions": [
     {
